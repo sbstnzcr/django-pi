@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monte Carlo Pi Estimation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="flex flex-col items-center justify-center h-screen">
+    <div class="mb-4">
+        <input type="range" id="pointSlider" min="1" max="100000" value="1"
+            class="w-64 appearance-none bg-gray-200 h-1 rounded-lg outline-none"
+            oninput="pointValue.textContent = this.value; updateVisualization(this.value)">
+        <label for="pointSlider" class="block">Number of Points: <span id="pointValue"
+                class="font-bold">1</span></label>
+    </div>
+    <div id="piResult" class="mb-4"></div>
+    <canvas id="piChart" width="800" height="800"></canvas>
+    <script>
+        const piResult = document.getElementById('piResult');
+        const canvas = document.getElementById('piChart');
+        const ctx = canvas.getContext('2d');
+
+        function updateVisualization(points) {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const totalPoints = parseInt(points);
+            let insideCircle = 0;
+
+            for (let i = 0; i < totalPoints; i++) {
+                const x = Math.random() * 2 - 1;
+                const y = Math.random() * 2 - 1;
+                const distance = x ** 2 + y ** 2;
+
+                if (distance <= 1) {
+                    insideCircle++;
+                    ctx.fillStyle = 'rgba(255, 99, 132, 0.5)';
+                } else {
+                    ctx.fillStyle = 'rgba(54, 162, 235, 0.5)';
+                }
+
+                // Scale the coordinates to fit canvas
+                const canvasX = (x + 1) * canvas.width / 2;
+                const canvasY = (1 - y) * canvas.height / 2;
+
+                // Draw point
+                ctx.beginPath();
+                ctx.arc(canvasX, canvasY, 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Draw unit circle
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(0, 0, 0, 1)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Estimate pi
+            const piEstimate = (insideCircle / totalPoints) * 4;
+            piResult.textContent = `Estimated Pi: ${piEstimate.toFixed(5)}`;
+        }
+
+        // Initial visualization
+        updateVisualization(1);
+    </script>
+</body>
+
+</html>

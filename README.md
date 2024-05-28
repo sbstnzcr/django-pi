@@ -21,13 +21,13 @@ This project is a Django-based web application that visualizes the Monte Carlo m
 
    ```bash
    git clone https://github.com/sbstnzcr/django-pi.git
-   cd monte-carlo-pi-estimation
+   cd django-pi
    ```
 
 2. **Create and Activate a Virtual Environment**
 
    ```bash
-   python -m venv venv
+   python3 -m venv venv
    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
    ```
 
